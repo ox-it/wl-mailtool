@@ -21,6 +21,7 @@
     </locale-config>
   </application>
 
+
 	<managed-bean>
 		<description>Mailtool</description>
 		<managed-bean-name>Mailtool</managed-bean-name>
@@ -89,5 +90,9 @@
 		<component-type>MailtoolSelector</component-type>
 		<component-class>org.sakaiproject.tool.mailtool.SelectorComponent</component-class>
 	</component>
-
+  
+  <converter>
+  	<converter-for-class>org.sakaiproject.tool.mailtool.EmailList</converter-for-class>
+  	<converter-class>org.sakaiproject.tool.mailtool.EmailListConverter</converter-class>
+  </converter>
 </faces-config>

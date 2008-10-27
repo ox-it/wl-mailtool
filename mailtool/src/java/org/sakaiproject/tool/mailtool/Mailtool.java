@@ -130,8 +130,6 @@ public class Mailtool {
 
 	protected String m_subjectprefix = "";
 
-	protected String m_otheremails = "";
-
 	protected String m_replytootheremail = "";
 
 	protected String m_body = "";
@@ -260,6 +258,8 @@ public class Mailtool {
 
 	private List selectedSectionUsers = null;
 
+	private EmailList emailList = null;
+	
 	/**
 	 * Mailtool bean for compose page
 	 */
@@ -556,14 +556,6 @@ public class Mailtool {
 
 	public void setEditorType(String editor) {
 		m_editortype = editor;
-	}
-
-	public String getOtherEmails() {
-		return m_otheremails;
-	}
-
-	public void setOtherEmails(String otheremails) {
-		m_otheremails = otheremails;
 	}
 
 	public String getReplyToOtherEmail() {
@@ -868,17 +860,9 @@ public class Mailtool {
 				// InternetAddress to[] = {new InternetAddress(toEmail) };
 				// Transport.send(message,to);
 			}
-			if (m_otheremails.trim().equals("") != true) {
-				//
-				// multiple email validation is needed here
-				//
-				String refinedOtherEmailAddresses = m_otheremails.trim()
-						.replace(';', ',');
-				recipientsString += refinedOtherEmailAddresses;
-				m_results += "<br/>" + refinedOtherEmailAddresses;
-				// InternetAddress to[] = {new
-				// InternetAddress(refinedOtherEmailAddresses) };
-				// Transport.send(message, to);
+			if (!emailList.getEmails().isEmpty()) {
+				recipientsString += emailList.getEmailList(",");
+				m_results += "<br/>" + emailList.getEmailList("<br/>");
 			}
 			if (m_sendmecopy) {
 				message.addRecipients(Message.RecipientType.CC, fromEmail);
@@ -931,7 +915,6 @@ public class Mailtool {
 		// Clear the Subject and Body of the Message
 		m_subject = getSubjectPrefix().equals("") ? getSubjectPrefixFromConfig()
 				: getSubjectPrefix();
-		m_otheremails = "";
 		m_body = "";
 		num_files = 0;
 		attachedFiles.clear();
@@ -942,6 +925,7 @@ public class Mailtool {
 		setAllUsersSelected(false);
 		setAllGroupSelected(false);
 		setAllSectionSelected(false);
+		setEmailList(new EmailList());
 
 		// Display Users with Bad Emails if the option is turned on.
 		boolean showBadEmails = getDisplayInvalidEmailAddr();
@@ -2138,5 +2122,13 @@ public class Mailtool {
 
 	public void setSitename(String sitename) {
 		this.sitename = sitename;
+	}
+
+	public void setEmailList(EmailList emailList) {
+		this.emailList = emailList;
+	}
+
+	public EmailList getEmailList() {
+		return emailList;
 	}
 }
